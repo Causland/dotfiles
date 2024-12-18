@@ -36,14 +36,8 @@ require('lazy').setup({
   -- Surround motions
   'tpope/vim-surround',
 
-  {
-    -- Add indentation guides even on blank lines
-    'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help ibl`
-    main = 'ibl',
-    opts = {},
-  },
+  -- Adds repeat with . for plugin commands 
+  'tpope/vim-repeat',
 
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
@@ -87,6 +81,13 @@ vim.o.completeopt = 'menuone,noselect'
 -- Set term colors
 vim.o.termguicolors = true
 
+-- Keep cursor off bottom/top
+vim.opt.scrolloff = 5
+
+-- Show whitespace symbols
+vim.opt.list = true
+vim.opt.listchars = { lead = '·', trail = '·', tab = '→ '}
+
 -- [[ Basic Keymaps ]]
 
 -- Keymaps for better default experience
@@ -113,3 +114,4 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+

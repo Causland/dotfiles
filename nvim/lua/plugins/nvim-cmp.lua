@@ -6,28 +6,35 @@ return {
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
 
-    -- Snippet Engine & its associated nvim-cmp source
-    'L3MON4D3/LuaSnip',
-    'saadparwaiz1/cmp_luasnip',
-
     -- Adds LSP completion capabilities
     'hrsh7th/cmp-nvim-lsp',
     'hrsh7th/cmp-path',
 
     -- Adds a number of user-friendly snippets
     'rafamadriz/friendly-snippets',
+
+    -- vscode style snippet support in native nvim snippets
+    'garymjr/nvim-snippets',
   },
   config = function()
     local cmp = require 'cmp'
-    local luasnip = require 'luasnip'
-    require('luasnip.loaders.from_vscode').lazy_load()
-    luasnip.config.setup {}
+    local snips = require('snippets')
+
+    snips.setup({ friendly_snippets = true })
 
     cmp.setup {
       snippet = {
         expand = function(args)
-          luasnip.lsp_expand(args.body)
+          vim.snippet.expand(args.body)
         end,
+      },
+      matching = {
+        disallow_fuzzy_matching = true,
+        disallow_fullfuzzy_matching = true,
+        disallow_partial_fuzzy_matching = true,
+        disallow_partial_matching = false,
+        disallow_prefix_unmatching = true,
+        disallow_symbol_nonprefix_matching = false,
       },
       completion = {
         completeopt = 'menu,menuone,noinsert',
@@ -37,33 +44,39 @@ return {
         ['<C-p>'] = cmp.mapping.select_prev_item(),
         ['<C-d>'] = cmp.mapping.scroll_docs(-4),
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
-        ['<C-Space>'] = cmp.mapping.complete {},
-        ['<CR>'] = cmp.mapping.confirm {
+        ['<C-Space>'] = cmp.mapping(function()
+          if cmp.visible() then
+            cmp.close()
+          else
+            cmp.complete()
+          end
+        end, { 'i', 's' }),
+        ['<Tab>'] = cmp.mapping.confirm {
           behavior = cmp.ConfirmBehavior.Replace,
           select = true,
         },
-        ['<Tab>'] = cmp.mapping(function(fallback)
+        ['<C-j>'] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_next_item()
-          elseif luasnip.expand_or_locally_jumpable() then
-            luasnip.expand_or_jump()
+          elseif vim.snippet.active({ direction = 1 }) then
+            vim.snippet.jump(1)
           else
             fallback()
           end
         end, { 'i', 's' }),
-        ['<S-Tab>'] = cmp.mapping(function(fallback)
+        ['<C-k>'] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_prev_item()
-          elseif luasnip.locally_jumpable(-1) then
-            luasnip.jump(-1)
+          elseif vim.snippet.active({ direction = -1 }) then
+            vim.snippet.jump(-1)
           else
             fallback()
           end
         end, { 'i', 's' }),
       },
       sources = {
+        { name = 'snippets'},
         { name = 'nvim_lsp' },
-        { name = 'luasnip' },
         { name = 'path' },
       },
     }

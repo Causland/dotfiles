@@ -33,12 +33,17 @@ return {
       update_focused_file = {
         enable = true,
       },
+      git = {
+        enable = true,
+        ignore = false,
+      }
     })
 
     vim.keymap.set('n', '<leader>n', require("nvim-tree.api").tree.toggle, { desc = '[n]vim-tree toggle' })
     vim.keymap.set('n', '<leader>Nf', require("nvim-tree.api").tree.focus, { desc = '[N]vim-tree [f]ocus' })
     vim.keymap.set('n', '<leader>Nr', require("nvim-tree.api").tree.reload, { desc = '[N]vim-tree [r]efresh' })
     vim.keymap.set('n', '<leader>Nc', require("nvim-tree.api").tree.collapse_all, { desc = '[N]vim-tree [c]ollapse' })
+    vim.keymap.set('n', '?', require("nvim-tree.api").tree.toggle_help, { desc = '[n]vim-tree help' })
 
     -- Perform on VimEnter
     vim.api.nvim_create_autocmd("VimEnter", {
