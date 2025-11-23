@@ -19,12 +19,16 @@ return {
         },
       },
       renderer = {
-        group_empty = true,
+        group_empty = false,
         icons = {
           show = {
             modified = true,
             hidden = true,
           },
+          glyphs = {
+            hidden = " ",
+            bookmark = " ",
+          }
         },
       },
       modified = {
@@ -32,10 +36,10 @@ return {
       },
       update_focused_file = {
         enable = true,
+        update_root = true,
       },
       git = {
-        enable = true,
-        ignore = false,
+        enable = false,
       }
     })
 

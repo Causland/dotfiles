@@ -112,6 +112,7 @@ return {
       nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
       -- Lesser used LSP functionality
       nmap('gD', vim.lsp.buf.declaration, '[g]oto [D]eclaration')
+      nmap('ga', ':ClangdSwitchSourceHeader<CR>', '[g]oto [a]lternate')
       nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[w]orkspace [a]dd Folder')
       nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[w]orkspace [r]emove Folder')
       nmap('<leader>wl', function()
@@ -122,60 +123,51 @@ return {
       vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
         vim.lsp.buf.format()
       end, { desc = 'Format current buffer with LSP' })
-    end
 
-    -- mason-lspconfig requires that these setup functions are called in this order
-    -- before setting up the servers.
-    require('mason').setup()
-    require('mason-lspconfig').setup()
+      -- Create clangd switch source header command
+      vim.api.nvim_buf_create_user_command(bufnr, 'ClangdSwitchSourceHeader', function()
+        vim.lsp.buf.execute_command({
+          command = '_clangd.switchSourceHeader',
+          arguments = { vim.uri_from_bufnr(bufnr) }
+        })
+      end, { desc = "Switch between source and header via Clangd" })
+    end
 
     -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-    -- Enable the following language servers
-    --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
-    --
-    --  Add any additional override configuration in the following tables. They will be passed to
-    --  the `settings` field of the server config. You must look up that documentation yourself.
-    --
-    --  If you want to override the default filetypes that your language server will attach to you can
-    --  define the property 'filetypes' to the map in question.
-    local servers = {
-      -- gopls = {},
-      -- pyright = {},
-      -- rust_analyzer = {},
-      -- tsserver = {},
-      -- html = { filetypes = { 'html', 'twig', 'hbs'} },
-
-      lua_ls = {
+    vim.lsp.config('lua_ls', {
+      capabilities = capabilities,
+      on_attach = on_attach,
+      settings = {
         Lua = {
           workspace = { checkThirdParty = false },
           telemetry = { enable = false },
-          -- NOTE: toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+          -- NOTE: toggle below to ignore Lua_LS's noisy 'missing-fields' warning
           -- diagnostics = { disable = { 'missing-fields' } },
-        },
+          }
       },
-
-      clangd = {}
-    }
-
-    -- Ensure the servers above are installed
-    local mason_lspconfig = require('mason-lspconfig')
-
-    mason_lspconfig.setup({
-      ensure_installed = vim.tbl_keys(servers),
+      filetypes = { 'lua' }
     })
 
-    mason_lspconfig.setup_handlers({
-      function(server_name)
-        require('lspconfig')[server_name].setup({
-          capabilities = capabilities,
-          on_attach = on_attach,
-          settings = servers[server_name],
-          filetypes = (servers[server_name] or {}).filetypes,
-        })
-      end,
+    vim.lsp.config('clangd', {
+      capabilities = capabilities,
+      on_attach = on_attach,
+      settings = {},
+      filetypes = { 'cpp', 'c', 'hpp', 'h' }
+    })
+
+    vim.lsp.config('pyright', {
+      capabilities = capabilities,
+      on_attach = on_attach,
+      settings = {},
+      filetypes = { 'py' }
+    })
+
+    require('mason').setup()
+    require('mason-lspconfig').setup({
+      ensure_installed = { 'lua_ls', 'clangd', 'pyright' }
     })
   end,
 }
