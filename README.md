@@ -19,5 +19,18 @@ sudo npm install -g tree-sitter-cli neovim
 ```
 3. Copy the nvim/ folder of this repo to ~/.config/.
 
+## tmux Config
+Here are some quick steps to set up tmux.
+
+1. Install the lastest tmux and add alias.
+```
+sudo apt install tmux
+echo "alias tn='tmux -u -f ~/.config/tmux/tmux.conf new'" >> ~/.bashrc
+echo "alias ta='tmux -u -f ~/.config/tmux/tmux.conf attach'" >> ~/.bashrc
+echo "alias tl='tmux list-sessions'" >> ~/.bashrc
+```
+
+2. Copy the tmux/ folder of this repo to ~/.config/.
+
 ## .editorconfig
 The editorconfig file in this repo can be placed in the root directory of any new c or cpp project. This will allow nvim to follow these rules.
