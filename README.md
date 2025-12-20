@@ -14,7 +14,7 @@ echo "alias nvim='~/apps/nvim-linux-x86_64.appimage" >> ~/.bashrc
 
 2. Install pre-requisites for nvim plugins.
 ```
-sudo apt install gcc g++ clangd pip python3-pynvim npm unzip luarocks xclip ripgrep fd fzf 
+sudo apt install gcc g++ clangd pip python3-pynvim npm unzip luarocks xclip ripgrep fd-find fzf
 sudo npm install -g tree-sitter-cli neovim
 ```
 3. Copy the nvim/ folder of this repo to ~/.config/.
