@@ -9,7 +9,7 @@ Here are some quick steps to setting up nvim.
 mkdir -p ~/apps && cd ~/apps
 curl -LO https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.appimage
 chmod +x nvim-linux-x86_64.appimage
-echo "alias nvim='~/apps/nvim-linux-x86_64.appimage" >> ~/.bashrc
+echo "alias nvim='~/apps/nvim-linux-x86_64.appimage'" >> ~/.bashrc
 ```
 
 2. Install pre-requisites for nvim plugins.
