@@ -17,7 +17,10 @@ echo "alias nvim='~/apps/nvim-linux-x86_64.appimage'" >> ~/.bashrc
 sudo apt install gcc g++ clangd pip python3-pynvim npm unzip luarocks xclip ripgrep fd-find fzf
 sudo npm install -g tree-sitter-cli neovim
 ```
+
 3. Copy the nvim/ folder of this repo to ~/.config/.
+
+4. Open a new nvim window and wait for Lazy to install all plugins.
 
 ## tmux Config
 Here are some quick steps to set up tmux.
@@ -28,9 +31,12 @@ sudo apt install tmux
 echo "alias tn='tmux -u -f ~/.config/tmux/tmux.conf new'" >> ~/.bashrc
 echo "alias ta='tmux -u -f ~/.config/tmux/tmux.conf attach'" >> ~/.bashrc
 echo "alias tl='tmux list-sessions'" >> ~/.bashrc
+git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
 ```
 
 2. Copy the tmux/ folder of this repo to ~/.config/.
 
+3. Open a new tmux session and type '<leader>I'.
+
 ## .editorconfig
-The editorconfig file in this repo can be placed in the root directory of any new c or cpp project. This will allow nvim to follow these rules.
+The editorconfig file in this repo can be placed in the root directory of any new c or cpp project. This will force nvim to follow these rules.
