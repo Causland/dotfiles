@@ -33,6 +33,10 @@ return {
     vim.keymap.set("n", "<leader>hl", function() harpoon:list():select(8) end,
                    { desc = "[h]arpoon select 8" })
 
+    -- Move lines in visual mode
+    vim.keymap.set("v", "K", ":m '>-2<CR>", { desc = "Move line up" })
+    vim.keymap.set("v", "J", ":m '>+1<CR>", { desc = "Move line down" })
+
     -- Toggle previous & next buffers stored within Harpoon list
     vim.keymap.set("n", "<leader>hp", function() harpoon:list():prev() end,
                    { desc = "[h]arpoon [p]rev" })
